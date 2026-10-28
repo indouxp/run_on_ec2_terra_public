@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-23 01:09:28（新規作成：S3 に置く Terraform state の仕組みと運用・復旧手順） -->
+<!-- Last updated: 2026-10-28 10:50:00（公開版向けに、公開版に含めない実行ログへのリンクを外す） -->
 # Terraform state の仕組み（S3 バックエンド）
 
 本システムの Terraform state（状態ファイル）を、どこに・どのように保管し、どう守り、どう復旧するかをまとめた設計文書です。
@@ -105,7 +105,7 @@ terraform {
 | `use_lockfile` | S3 上のロックファイルで排他します（R2）。Terraform 1.10 以上が必要なため、`required_version` も `>= 1.10` にしています |
 
 - **backend ブロックでは変数を使えません。** そのため、バケット名・プロファイル・ロール ARN を直書きしています。
-- backend を追加・変更したときは `terraform init -migrate-state` が必要です。本システムでは 2026-09-22 に、ローカルの state を `terraform init -migrate-state -force-copy` で S3 に移しました（[run-terraform.log](run-terraform.log)）。
+- backend を追加・変更したときは `terraform init -migrate-state` が必要です。本システムでは 2026-09-22 に、ローカルの state を `terraform init -migrate-state -force-copy` で S3 に移しました（`run-terraform.log`（公開版には含めていません））。
 
 ---
 

@@ -1,5 +1,5 @@
 # `terraform` / `provider` ブロック 設定可能キー（Argument Reference）
-<!-- Last updated: 2026-09-23 01:12:41（state の仕組みの文書へのリンクを追加） -->
+<!-- Last updated: 2026-10-28 10:50:00（公開版向けに、公開版に含めない実行ログへのリンクを外す） -->
 
 Terraform Language 公式ドキュメント（`developer.hashicorp.com/terraform/language/block/terraform`, `.../providers/configuration`）および AWS Provider 公式ドキュメントに基づく、`terraform` ブロックと `provider "aws"` ブロックで設定可能なキーの一覧です。前者は Terraform Core 自体の言語機能、後者は Core 共通部分＋AWS プロバイダ固有部分で構成されます。
 
@@ -103,7 +103,7 @@ Terraform Language 公式ドキュメント（`developer.hashicorp.com/terraform
 
 - **`backend`/`cloud` は相互排他**: 本プロジェクトは `infra/` の state を `backend "s3"` で S3 に移行済みです（改善対象 B-5 / BUG-003 の再発防止）。バケットは別ルートモジュール `infra/backend/` で作成します。
 - **`backend` ブロックでは変数・ローカル値・data を参照できない**: 値は直書きします。そのため `var.aws_account_id` 等は使えず、ロール ARN もリテラルで書きます（`infra/provider.tf` のコメント参照）。
-- **backend を追加・変更したら `terraform init -migrate-state` が必要**: 本プロジェクトは `terraform init -migrate-state -force-copy` で既存のローカル state を S3 へ移しました（[run-terraform.log](run-terraform.log) 参照）。
+- **backend を追加・変更したら `terraform init -migrate-state` が必要**: 本プロジェクトは `terraform init -migrate-state -force-copy` で既存のローカル state を S3 へ移しました（`run-terraform.log`（公開版には含めていません） 参照）。
 - **backend の認証も構築ロール経由**: state へのアクセスにも `ts-030-role-build` が要るため、bootstrap を破棄している間は `infra` の `terraform init`/`plan` も実行できません。
 - **`assume_role` は「借りる権限」を絞り込む仕組み**: `role_arn` が指すロールの Trust Policy（誰が引き受けられるか）とセットで機能します。詳細は [AssumeRoleまとめ.md](AssumeRoleまとめ.md) を参照。
 - **`default_tags` と個別リソースの `tags` は同キーなら個別側が優先**: 本プロジェクトは `Project` タグを `default_tags` で一括付与し、個別リソースには書かない方針です（[CLAUDE.md](../CLAUDE.md) 参照）。なお `default_tags` は Terraform 管理外のリソースには効かないため、起動 Lambda が boto3 で作る EC2/EBS には `lambda_function.py` 側で `Project` タグを明示しています。

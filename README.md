@@ -1,6 +1,59 @@
 # run_on_ec2_terra
 
+<!-- Last updated: 2026-10-28 10:30:00（公開版向けに「公開版について」「使用技術」「ディレクトリ構成」「セットアップの要点」「ライセンス」「免責事項」を追加） -->
+
 S3 へのファイルアップロードを契機に EC2 を起動し、利用者のシェルスクリプト（run.sh）をバッチ実行する基盤です。インフラは Terraform で構築しています。
+
+> **元プロジェクトとの関係**
+> 本リポジトリは、公開済みの [run_on_ec2_public](https://github.com/indouxp/run_on_ec2_public)（S3 イベント連携による EC2 自動処理システム）を **Terraform 化**したものです。
+> 元プロジェクトでシェルスクリプトと手作業で行っていた AWS リソースの構築を Terraform のコードに置き換え、あわせて終了処理の簡素化（EC2 の自己 terminate）、SNS トピックを使わない通知、最小権限の IAM 設計、S3 による state 管理などの見直しを行っています。
+
+> **公開版について**
+> 本リポジトリはポートフォリオとして公開するための版です。非公開の開発用リポジトリからコピーして作成しました。
+> - AWS アカウント ID・メールアドレス・電話番号・リソース ID・端末名などは、例示用のダミー値（`123456789012`、`user@example.com`、`+819012345678`、`vpc-0123456789abcdef0` など）に置き換えています。スクリーンショットの個人情報は黒塗りしています。
+> - Terraform の state、端末の実行ログ、AI とのセッション記録、作業ディレクトリ（`work/`）は含めていません。
+> - 公開にあたって内容を調整しているため、実際に稼働させた実装とは一致しない場合があります。
+> - 文書中のコミットハッシュ（例: `ed287e5`）は開発用リポジトリのもので、本リポジトリの履歴には存在しません。
+
+## 使用技術
+
+| 分類 | 技術 |
+|---|---|
+| IaC | Terraform 1.10 以上（AWS Provider 5.x、S3 バックエンド＋`use_lockfile` によるロック） |
+| コンピュート | AWS Lambda（Python）、Amazon EC2（user_data による自律実行・自己 terminate） |
+| ストレージ | Amazon S3（入力・出力・CloudTrail ログ・Terraform state） |
+| 通知 | Amazon SES（メール）、Amazon SNS の SMS 直接 publish |
+| 権限 | IAM（用途別ユーザー＋AssumeRole による最小権限、S3 の Deny フェンス） |
+| 監視・監査 | Amazon CloudWatch Logs（CloudWatch Agent）、AWS CloudTrail |
+| 運用スクリプト | bash（AWS CLI v2） |
+
+## ディレクトリ構成
+
+```
+.
+├── README.md            本書
+├── CLAUDE.md            開発時に Claude Code へ与えていた指示（公開版向けに調整）
+├── LICENSE              MIT License
+├── docs/                設計・運用・用語・Terraform 引数リファレンス・構成図（SVG）
+├── infra/               Terraform ルートモジュール（本体。VPC・S3・IAM・Lambda・監視）
+│   ├── lambda/          Lambda 関数（lambda_function.py）と EC2 の user_data テンプレート
+│   ├── bootstrap/       構築ロール ts-030-role-build を作る別ルートモジュール（初回1回）
+│   └── backend/         state 用 S3 バケットを作る別ルートモジュール（常設）
+└── tool/                運用スクリプト（投入・状態確認・結果取得・削除・EC2 上のジョブ）
+```
+
+## セットアップの要点
+
+実際に構築する場合は、次の点に注意してください（詳細は [docs/運用ユーザーと再作成手順.md](docs/運用ユーザーと再作成手順.md)）。
+
+1. ダミー値を自分の環境の値に書き換えます。
+   - `infra/terraform.tfvars`・`infra/backend/terraform.tfvars` の `aws_account_id`
+   - `infra/provider.tf` の `backend "s3"` ブロック（変数が使えないため直書き）の `role_arn` とバケット名
+   - S3 バケット名はグローバルに一意である必要があるため、`ts-030-` のままでは作成できない場合があります。
+2. AWS CLI のプロファイル（構築用・データ運用用・参照用）を `~/.aws/config` に用意します。
+3. 作成順は `infra/bootstrap` → `infra/backend` → `infra`、破棄は `infra` → `infra/bootstrap` です。ルートモジュールごとに `terraform init` が必要です。
+4. SES の email identity は手動で登録します。
+5. 既定のインスタンスタイプ `c6i.4xlarge` は高額です。実行前に `run.conf` の `instance_type` を確認してください。
 
 ---
 
@@ -85,7 +138,7 @@ EC2 インスタンス (ts-030-ec2-010。user_data で自律実行)
 ```
 
 - 必須キーは `exec`・`log`・`result`・`mail`・`sms`・`ec2_role_name`・`subnet_name`・`sg_name`・`ec2_instance_name_tag`・`output_bucket`・`ses_from_email`・`prj_prefix` の12個です。`instance_type`・`ebs_size`・`timeout`（秒、未指定時 21600）などは任意です。
-- メールアドレス・電話番号を含むため、実際の run.conf は `work/`（`.gitignore` 済み）に置きます。
+- メールアドレス・電話番号を含むため、実際の run.conf は `work/`（`.gitignore` 済み。公開版には含めていません）に置きます。
 
 ### 費用概算（8回/月実行想定）
 
@@ -207,4 +260,17 @@ EC2 (ts-030-ec2-010, user_data)   入力を取得 → run.sh（timeout 付き）
 |:-:|------|----------|
 | 22 | [docs/不具合一覧.md](docs/不具合一覧.md) | 実際に起きた不具合・原因・再発防止（BUG-001〜007） |
 | 23 | [docs/改善対象.md](docs/改善対象.md) | 対応済み・未対応の改善項目と判断の理由 |
-| 24 | [docs/run-terraform.log](docs/run-terraform.log) ほか `docs/*.log` | 端末移行・state 復旧・再構築のときの実行記録（必要なときに参照） |
+
+---
+
+## ライセンス
+
+[MIT License](LICENSE) で公開しています。Copyright (c) 2026 Tsystem
+
+## 免責事項
+
+- 本リポジトリのコード・文書は**現状のまま（AS IS）**提供するもので、動作・正確性・安全性について一切保証しません。利用によって生じたいかなる損害についても、作者は責任を負いません。
+- 本リポジトリのコードを実行すると、AWS 上にリソース（EC2・S3・Lambda・CloudTrail など）が作成され、**AWS の利用料金が発生します**。料金は利用者の負担です。不要になったリソースは必ず削除してください。
+- 公開版は、実際に稼働させた実装とは一致しない場合があります。
+- アカウント ID・メールアドレス・電話番号・リソース ID などはダミー値です。そのままでは動作しないため、利用者自身の環境の値に書き換えてください。
+- 本リポジトリは個人のポートフォリオであり、AWS（Amazon Web Services）・HashiCorp を含む第三者とは関係ありません。記載の製品名・サービス名は各社の商標または登録商標です。

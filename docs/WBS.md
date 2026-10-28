@@ -1,5 +1,5 @@
 # WBS（作業リスト）
-<!-- Last updated: 2026-09-22 18:08:11（フェーズ2 を構築の記録として書き直し、フェーズ3 は実施しないことに更新。2.10 は廃止として残す） -->
+<!-- Last updated: 2026-10-28 10:40:00（公開版向けに、公開版に含めない記録であることを注記） -->
 
 開始日：2026-06-21（日）　完了：2026-09-22（火）（フェーズ2 完了。当初の完了目標 2026-08-17 はフェーズ3 を含む計画でしたが、フェーズ3 は実施しないことを 2026-09-22 に決定しました）
 
@@ -64,14 +64,14 @@
 
 | No | タスク | 開始日 | 完了日 | 日数 | 関連 | 確認根拠 |
 |:--:|--------|:------:|:------:|:----:|------|----------|
-| 付帯1 | 環境移行（pc01 / Debian 13。AWS CLI v2・Terraform 1.16.3 導入）と state の import 復旧（BUG-003） ✓ | 9/21(月) | 9/21(月) | 1 | `tool/20260921-debian13-*.sh`、[run-terraform.log](run-terraform.log) | d58bfb0・1f57729、ins-aws_cli.log・ins-terraform.log、run-terraform.log（44 import・再 plan No changes） |
+| 付帯1 | 環境移行（pc01 / Debian 13。AWS CLI v2・Terraform 1.16.3 導入）と state の import 復旧（BUG-003） ✓ | 9/21(月) | 9/21(月) | 1 | `tool/20260921-debian13-*.sh`、`run-terraform.log`（公開版には含めていません） | d58bfb0・1f57729、ins-aws_cli.log・ins-terraform.log、run-terraform.log（44 import・再 plan No changes） |
 | 付帯2 | Lambda が起動する EC2/EBS に `Project=<prj_prefix>`・`autogen-by=<prj_prefix>-system` タグを付与 ✓ | 9/21(月) | 9/21(月) | — | `lambda_function.py` | 55d2327、run-terraform.log（lmd-010 の CodeSha256 が新コードと一致）。実際のタグ付与は 2.9 で確認済み（9/22） |
 | 付帯3 | 全削除→再構築（構築ロールの削除系権限不足 BUG-004 を修正） ✓ | 9/22(火) | 9/22(火) | 1 | [不具合一覧.md](不具合一覧.md) | ed287e5・8368bc4・533cdb6、run-terraform.log（44 added・再 plan No changes） |
 | 付帯4 | tfstate の S3 バックエンド化（`infra/backend/`・`ts-030-bkt-tfstate`。改善 B-5） ✓ | 9/22(火) | 9/22(火) | — | [改善対象.md](改善対象.md) | 7db4f27・89a5bcf・3d1ab39、run-terraform.log（移行後 No changes・state 46件・.tflock 確認） |
 
 > **完了確認の方法（2026-09-22 実施）**
 > - ① コミット：各タスクの実装コミット（上表のハッシュ）の日付を完了日としました。
-> - ② セッション記録：`claude-log/*.md`・`claude-log/next.txt`・`docs/run-terraform.log` の apply・実機確認の記録を確認しました。
+> - ② セッション記録：`claude-log/*.md`・`claude-log/next.txt`・`docs/run-terraform.log` の apply・実機確認の記録を確認しました（いずれも公開版には含めていません）。
 > - ③ 現在の実機：2.1〜2.8 のリソースは 9/22 の全削除→再構築で作り直したものです。`infra/` の state に 44 リソースがあり、`terraform plan` は No changes です（`infra/`・`infra/bootstrap/`・`infra/backend/` とも）。`tool/aws-describe-tagged-resources.sh` でも存在を確認済みです。
 > - 2.5（Lambda）・2.4c-alt（自己 terminate）・付帯2（タグ付与）の実際の動作は、E2E（2.9、9/22）で確認済みです。
 
