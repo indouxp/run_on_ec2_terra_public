@@ -1,5 +1,5 @@
 # `terraform` / `provider` ブロック 設定可能キー（Argument Reference）
-<!-- Last updated: 2026-10-28 10:50:00（公開版向けに、公開版に含めない実行ログへのリンクを外す） -->
+<!-- Last updated: 2026-10-29 08:50:18（公開版向けに、公開版に含めない実行ログへのリンクを外す） -->
 
 Terraform Language 公式ドキュメント（`developer.hashicorp.com/terraform/language/block/terraform`, `.../providers/configuration`）および AWS Provider 公式ドキュメントに基づく、`terraform` ブロックと `provider "aws"` ブロックで設定可能なキーの一覧です。前者は Terraform Core 自体の言語機能、後者は Core 共通部分＋AWS プロバイダ固有部分で構成されます。
 
