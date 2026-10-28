@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 860 540"
+   font-family="'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Meiryo',sans-serif"
+   version="1.1"
+   id="svg89"
+   sodipodi:docname="build_role_policy_structure.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview91"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.5991105"
+     inkscape:cx="452.12636"
+     inkscape:cy="199.79858"
+     inkscape:window-width="1920"
+     inkscape:window-height="1029"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg89" />
+  <!-- Last updated: 2026-09-22 18:05:30（副題から旧スクリプト名を削除、インライン表記を一般化） -->
+  <defs
+     id="defs5">
+    <marker
+       id="ar"
+       markerWidth="10"
+       markerHeight="10"
+       refX="8"
+       refY="3"
+       orient="auto"
+       markerUnits="strokeWidth">
+      <path
+         d="M0,0 L8,3 L0,6 Z"
+         fill="#555"
+         id="path2" />
+    </marker>
+  </defs>
+  <text
+     x="430"
+     y="30"
+     text-anchor="middle"
+     font-size="20"
+     font-weight="bold"
+     fill="#222"
+     id="text7">1つの IAM ロールに付く「2種類のポリシー」</text>
+  <text
+     x="430"
+     y="53"
+     text-anchor="middle"
+     font-size="13"
+     fill="#666"
+     id="text9">構築ロール ts-030-role-build（infra/bootstrap/iam_build_role.tf）</text>
+  <!-- role in center -->
+  <g
+     id="g575"
+     transform="translate(-3.612006,0.10454936)">
+    <rect
+       x="332.91586"
+       y="160.99303"
+       width="200"
+       height="80"
+       rx="12"
+       fill="#eef4fb"
+       stroke="#2f6db3"
+       stroke-width="2.5"
+       id="rect11" />
+    <text
+       x="432.8851"
+       y="192.64323"
+       text-anchor="middle"
+       font-size="14px"
+       font-weight="bold"
+       fill="#1f4e79"
+       id="text13">IAM ロール</text>
+    <text
+       x="432.88535"
+       y="214.64323"
+       text-anchor="middle"
+       font-size="12.5px"
+       fill="#1f4e79"
+       font-family="monospace"
+       id="text15">ts-030-role-build</text>
+  </g>
+  <!-- Trust Policy (left) -->
+  <g
+     id="g516"
+     transform="translate(-2.5202948,-46.295514)">
+    <rect
+       x="30"
+       y="120"
+       width="270"
+       height="150"
+       rx="10"
+       fill="#eafaf0"
+       stroke="#2e8b57"
+       stroke-width="2"
+       id="rect17" />
+    <g
+       id="g497">
+      <text
+         x="64.77832"
+         y="145"
+         font-size="14px"
+         font-weight="bold"
+         fill="#1e6b41"
+         id="text19">① Trust Policy（信頼ポリシー）</text>
+      <text
+         x="81.685127"
+         y="161.03696"
+         font-size="12px"
+         fill="#333333"
+         font-weight="bold"
+         id="text21">＝ 誰が「なれる」か</text>
+    </g>
+    <g
+       id="g487"
+       transform="translate(0,1.6271123)">
+      <text
+         x="61.839684"
+         y="181.61478"
+         font-size="11.5px"
+         fill="#333333"
+         font-family="monospace"
+         id="text23">Principal: アカウントルート</text>
+      <text
+         x="62.749352"
+         y="202.76079"
+         font-size="11.5px"
+         fill="#333333"
+         font-family="monospace"
+         id="text25">Action: sts:AssumeRole</text>
+    </g>
+    <text
+       x="49.915321"
+       y="225.89403"
+       font-size="11px"
+       fill="#777777"
+       id="text27"><tspan
+         sodipodi:role="line"
+         id="tspan479"
+         x="49.915321"
+         y="225.89403">Principal が「有る」。</tspan><tspan
+         sodipodi:role="line"
+         id="tspan481"
+         x="49.915321"
+         y="240.78944">Action はAssumeRole 固定。</tspan><tspan
+         sodipodi:role="line"
+         x="49.915321"
+         y="255.68484"
+         id="tspan483">実際に引き受け可否は呼び出し側の権限で制御。</tspan></text>
+  </g>
+  <!-- Permission Policy (right) -->
+  <g
+     id="g564"
+     transform="translate(0.75482942,-46.295514)">
+    <a
+       id="a545">
+      <rect
+         x="560"
+         y="120"
+         width="270"
+         height="150"
+         rx="10"
+         fill="#fdf3e8"
+         stroke="#c07a1e"
+         stroke-width="2"
+         id="rect33" />
+    </a>
+    <text
+       x="576"
+       y="145"
+       font-size="14px"
+       font-weight="bold"
+       fill="#9a5f14"
+       id="text35">② Permission Policy（許可ポリシー）</text>
+    <text
+       x="590.7843"
+       y="165.311"
+       font-size="12px"
+       fill="#333333"
+       font-weight="bold"
+       id="text37">＝ なった後に「何ができる」か</text>
+    <g
+       id="g526"
+       transform="translate(2.3889473,-4.6819708)">
+      <text
+         x="576"
+         y="190"
+         font-size="11.5px"
+         fill="#333333"
+         font-family="monospace"
+         id="text39">Action + Resource（Principal 無し）</text>
+      <text
+         x="575.50024"
+         y="208"
+         font-size="11.5px"
+         fill="#333333"
+         id="text41">6サービス限定 / 原則 Resource: *</text>
+    </g>
+    <g
+       id="g536"
+       transform="translate(17.522219,-2.2880979)">
+      <text
+         x="580.6424"
+         y="225.62477"
+         font-size="11px"
+         fill="#777777"
+         id="text43">IAM/EC2/S3/Lambda/Logs/</text>
+      <text
+         x="580.6424"
+         y="241.62477"
+         font-size="11px"
+         fill="#777777"
+         id="text45">CloudTrail。</text>
+    </g>
+    <text
+       x="597.72418"
+       y="261.71191"
+       font-size="11px"
+       fill="#777777"
+       id="text47">インラインポリシー。</text>
+  </g>
+  <!-- arrows from policies to role -->
+  <line
+     x1="298.44449"
+     y1="174.90202"
+     x2="326.44449"
+     y2="209.90202"
+     stroke="#2e8b57"
+     stroke-width="1.8"
+     marker-end="url(#ar)"
+     id="line49" />
+  <line
+     x1="560.57758"
+     y1="180.26208"
+     x2="532.57758"
+     y2="215.26208"
+     stroke="#c07a1e"
+     stroke-width="1.8"
+     marker-end="url(#ar)"
+     id="line51" />
+  <text
+     x="430.37003"
+     y="255.38568"
+     text-anchor="middle"
+     font-size="11px"
+     fill="#555555"
+     id="text53">同じ1つのロールに両方が付く</text>
+  <!-- asymmetry note -->
+  <g
+     id="g586"
+     transform="translate(-4.5730808,-3.0621823)">
+    <rect
+       x="253.87694"
+       y="274.79211"
+       width="360"
+       height="46"
+       rx="8"
+       fill="#fff6f6"
+       stroke="#c0392b"
+       stroke-width="1.6"
+       id="rect55" />
+    <text
+       x="433.84888"
+       y="291.95752"
+       text-anchor="middle"
+       font-size="11.5px"
+       fill="#a93226"
+       font-weight="bold"
+       id="text57">Principal が有る=Trust / 無い=Permission</text>
+    <text
+       x="433.43384"
+       y="308.95752"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#a93226"
+       id="text59">この非対称が2つの役割の違いを表す</text>
+  </g>
+  <!-- 3-party separation -->
+  <text
+     x="433.23624"
+     y="340.07294"
+     text-anchor="middle"
+     font-size="13px"
+     font-weight="bold"
+     fill="#333333"
+     id="text61">独立した3者（混同しない）</text>
+  <g
+     id="g608"
+     transform="translate(1.5323766,-72.435825)">
+    <rect
+       x="30"
+       y="425"
+       width="255"
+       height="70"
+       rx="8"
+       fill="#f4f6fa"
+       stroke="#8899bb"
+       id="rect63" />
+    <text
+       x="157.6875"
+       y="447"
+       text-anchor="middle"
+       font-size="12px"
+       font-weight="bold"
+       fill="#333344"
+       id="text65">A. ロールを作る主体</text>
+    <text
+       x="157.77393"
+       y="465.99561"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#333333"
+       id="text67">ts-030-usr-role-admin</text>
+    <text
+       x="157.5"
+       y="485"
+       text-anchor="middle"
+       font-size="10.5px"
+       fill="#777777"
+       id="text69">（bootstrap 実行者）</text>
+  </g>
+  <g
+     id="g636"
+     transform="translate(1.9295548,-72.435825)">
+    <rect
+       x="575"
+       y="425"
+       width="255"
+       height="70"
+       rx="8"
+       fill="#f4f6fa"
+       stroke="#8899bb"
+       id="rect79" />
+    <text
+       x="702.55273"
+       y="447"
+       text-anchor="middle"
+       font-size="12px"
+       font-weight="bold"
+       fill="#333344"
+       id="text81">C. ロールが持つ権限</text>
+    <text
+       x="702.55908"
+       y="466.15222"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#333333"
+       id="text83">6サービス限定</text>
+    <text
+       x="702.5"
+       y="485"
+       text-anchor="middle"
+       font-size="10.5px"
+       fill="#777777"
+       id="text85">（② Permission で規定）</text>
+  </g>
+  <text
+     x="433.11096"
+     y="503.15488"
+     text-anchor="middle"
+     font-size="10.5px"
+     fill="#888888"
+     id="text87">A で作り、B が引き受け、その間だけ C の権限で動く（各々が独立に決まる）</text>
+  <g
+     id="g624"
+     transform="translate(1.2506953,-17.32306)">
+    <rect
+       x="300.92075"
+       y="370.05869"
+       width="255.65709"
+       height="126.40663"
+       rx="7.989284"
+       fill="#f4f6fa"
+       stroke="#8899bb"
+       id="rect71"
+       style="stroke-width:1.3429" />
+    <text
+       x="428.86722"
+       y="398.10693"
+       text-anchor="middle"
+       font-size="12px"
+       font-weight="bold"
+       fill="#333344"
+       id="text73">B. 引き受けられる相手</text>
+    <text
+       x="429.06509"
+       y="422.04013"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#333333"
+       id="text75">root 信頼 ＋ 呼出側の権限</text>
+    <text
+       x="504.20413"
+       y="442.09384"
+       text-anchor="middle"
+       font-size="10.5px"
+       fill="#777777"
+       id="text77">（① Trust で規定）</text>
+    <text
+       x="397.84033"
+       y="457.26065"
+       text-anchor="middle"
+       font-size="11px"
+       fill="#333333"
+       id="text380"><tspan
+         sodipodi:role="line"
+         id="tspan461"
+         x="397.84033"
+         y="457.26065">ts-030-usr-build</tspan><tspan
+         sodipodi:role="line"
+         id="tspan463"
+         x="397.84033"
+         y="472.15607">ただし Trust は root 信頼のため、</tspan><tspan
+         sodipodi:role="line"
+         x="397.84033"
+         y="487.05148"
+         id="tspan465">ID ポリシー次第で他ユーザーも可</tspan></text>
+  </g>
+</svg>

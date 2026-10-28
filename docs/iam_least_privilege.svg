@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Last updated: 2026-09-22 18:05:30（管理者の説明の重複語を修正） -->
+
+<svg
+   width="880"
+   height="600"
+   font-family="sans-serif"
+   font-size="13"
+   version="1.1"
+   id="svg99"
+   sodipodi:docname="iam_least_privilege.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview101"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.99367135"
+     inkscape:cx="469.47112"
+     inkscape:cy="329.08265"
+     inkscape:window-width="1280"
+     inkscape:window-height="955"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1664" />
+  <defs
+     id="defs5">
+    <marker
+       id="arrow"
+       markerWidth="8"
+       markerHeight="6"
+       refX="8"
+       refY="3"
+       orient="auto"
+       markerUnits="strokeWidth"
+       viewBox="0 0 8 6"
+       preserveAspectRatio="xMidYMid">
+      <path
+         d="M 0,0 8,3 0,6 Z"
+         fill="#444444"
+         id="path2" />
+    </marker>
+  </defs>
+  <rect
+     x="0"
+     y="0"
+     width="880"
+     height="600"
+     fill="#ffffff"
+     id="rect7" />
+  <text
+     x="440"
+     y="28"
+     text-anchor="middle"
+     font-size="18"
+     font-weight="bold"
+     id="text9">IAM 最小権限の仕組み（構築用2ユーザー + 構築ロール）</text>
+  <!-- 管理者 -->
+  <g
+     id="g1664">
+    <rect
+       x="40"
+       y="55"
+       width="300"
+       height="78"
+       rx="8"
+       fill="#fde8e8"
+       stroke="#dd3333"
+       stroke-width="1.5"
+       id="rect11" />
+    <text
+       x="194.1405"
+       y="80"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text13">管理者 ts-usr-admin（常用しない）</text>
+    <text
+       x="190.86375"
+       y="98.149498"
+       text-anchor="middle"
+       font-size="11px"
+       id="text15">Administrator。ts-030-usr-* の作成（コンソール）と</text>
+    <text
+       x="190.80299"
+       y="116"
+       text-anchor="middle"
+       font-size="11px"
+       id="text17">緊急対応のときだけ使う</text>
+  </g>
+  <!-- role-admin user -->
+  <!-- assume-role user -->
+  <g
+     id="g1732">
+    <rect
+       x="40"
+       y="430"
+       width="300"
+       height="74"
+       rx="8"
+       fill="#eef3fb"
+       stroke="#3366cc"
+       stroke-width="1.5"
+       id="rect27" />
+    <text
+       x="190.14282"
+       y="455"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text29">ts-030-usr-build</text>
+    <text
+       x="190.13292"
+       y="472.15598"
+       text-anchor="middle"
+       font-size="11px"
+       id="text31">sts:AssumeRole のみ</text>
+    <text
+       x="190"
+       y="491"
+       text-anchor="middle"
+       font-size="11px"
+       id="text33">（リソース権限は持たない）</text>
+  </g>
+  <!-- bootstrap -->
+  <g
+     id="g1776">
+    <rect
+       x="388.23785"
+       y="180"
+       width="210"
+       height="84"
+       rx="8"
+       fill="#f4f4f4"
+       stroke="#888888"
+       stroke-width="1.2"
+       id="rect35" />
+    <text
+       x="493.23785"
+       y="206"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text37">infra/bootstrap/</text>
+    <text
+       x="494.1785"
+       y="225.84288"
+       text-anchor="middle"
+       font-size="11px"
+       id="text39">AssumeRole なし</text>
+    <text
+       x="493.29797"
+       y="244"
+       text-anchor="middle"
+       font-size="11px"
+       id="text41">直接 apply/destroy</text>
+  </g>
+  <!-- 構築ロール -->
+  <g
+     id="g1828">
+    <rect
+       x="650"
+       y="150"
+       width="200"
+       height="150"
+       rx="8"
+       fill="#fff7e6"
+       stroke="#e69500"
+       stroke-width="2"
+       id="rect43" />
+    <text
+       x="750.32227"
+       y="176"
+       text-anchor="middle"
+       font-weight="bold"
+       font-size="12px"
+       id="text45">ts-030-role-build</text>
+    <text
+       x="749.96924"
+       y="192.25075"
+       text-anchor="middle"
+       font-size="10.5px"
+       font-weight="bold"
+       id="text47">Trust Policy</text>
+    <text
+       x="749.46973"
+       y="211.7363"
+       text-anchor="middle"
+       font-size="10.5px"
+       id="text49">アカウントルート信頼</text>
+    <line
+       x1="668"
+       y1="221.62589"
+       x2="832"
+       y2="221.62589"
+       stroke="#e69500"
+       stroke-dasharray="3"
+       id="line51" />
+    <text
+       x="749.677"
+       y="238.24187"
+       text-anchor="middle"
+       font-size="10.5px"
+       font-weight="bold"
+       id="text53">Permission Policy</text>
+    <text
+       x="750.03149"
+       y="257.76941"
+       text-anchor="middle"
+       font-size="10.5px"
+       id="text55">6 サービス限定の許可</text>
+    <text
+       x="750.74573"
+       y="276"
+       text-anchor="middle"
+       font-size="10.5px"
+       fill="#aa6600"
+       id="text57">Administrator より絞る</text>
+  </g>
+  <!-- infra -->
+  <g
+     id="g1754">
+    <rect
+       x="400"
+       y="425"
+       width="210"
+       height="84"
+       rx="8"
+       fill="#f4f4f4"
+       stroke="#888888"
+       stroke-width="1.2"
+       id="rect59" />
+    <text
+       x="504.60962"
+       y="451"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text61">infra/</text>
+    <text
+       x="506.13327"
+       y="470.23679"
+       text-anchor="middle"
+       font-size="11px"
+       id="text63">AssumeRole あり</text>
+    <text
+       x="504.7771"
+       y="489"
+       text-anchor="middle"
+       font-size="11px"
+       id="text65">apply/destroy</text>
+    <text
+       x="504.7771"
+       y="504"
+       text-anchor="middle"
+       font-size="10px"
+       id="text66">state: S3（ts-030-bkt-tfstate）</text>
+  </g>
+  <!-- AWSリソース -->
+  <g
+     id="g1798">
+    <rect
+       x="650"
+       y="425"
+       width="200"
+       height="84"
+       rx="8"
+       fill="#eef7ee"
+       stroke="#33aa66"
+       stroke-width="1.5"
+       id="rect67" />
+    <text
+       x="749.63501"
+       y="451"
+       text-anchor="middle"
+       font-weight="bold"
+       font-size="12px"
+       id="text69">AWS リソース</text>
+    <text
+       x="750"
+       y="469.66843"
+       text-anchor="middle"
+       font-size="10.5px"
+       id="text71">VPC / Subnet / IGW / RT …</text>
+    <text
+       x="749.14752"
+       y="489"
+       text-anchor="middle"
+       font-size="10.5px"
+       fill="#33aa66"
+       id="text73">Project=ts-030 自動付与</text>
+  </g>
+  <!-- arrows -->
+  <!-- admin -> role-admin (creates) -->
+  <line
+     x1="120"
+     y1="133"
+     x2="120"
+     y2="183"
+     stroke="#444"
+     stroke-width="1.3"
+     marker-end="url(#arrow)"
+     id="line75"
+     style="stroke-width:1.6;stroke-dasharray:none" />
+  <text
+     x="128"
+     y="162"
+     font-size="10"
+     id="text77"
+     style="fill:#000000">作成(1回)</text>
+  <!-- admin -> assume-role (creates) -->
+  <line
+     x1="260"
+     y1="133"
+     x2="260"
+     y2="428"
+     stroke="#bbb"
+     stroke-width="1.1"
+     stroke-dasharray="4"
+     marker-end="url(#arrow)"
+     id="line79"
+     style="stroke-dasharray:none;stroke:#444444;stroke-opacity:1;marker-end:url(#arrow);stroke-width:1.6" />
+  <text
+     x="268"
+     y="300"
+     font-size="10"
+     fill="#999"
+     id="text81"
+     style="fill:#000000">作成(1回)</text>
+  <!-- role-admin -> bootstrap -->
+  <line
+     x1="340"
+     y1="222"
+     x2="386.72809"
+     y2="222"
+     stroke="#33aa66"
+     stroke-width="1.6"
+     marker-end="url(#arrow)"
+     id="line83" />
+  <!-- bootstrap -> build role (create/delete) -->
+  <line
+     x1="598.52454"
+     y1="222"
+     x2="648.22772"
+     y2="222"
+     stroke="#33aa66"
+     stroke-width="1.82987"
+     marker-end="url(#arrow)"
+     id="line85"
+     style="stroke-width:1.6;stroke-dasharray:none" />
+  <text
+     x="623.83154"
+     y="212"
+     text-anchor="middle"
+     font-size="10px"
+     fill="#33aa66"
+     id="text87">作成/削除</text>
+  <!-- assume-role -> infra -->
+  <line
+     x1="340"
+     y1="467"
+     x2="398"
+     y2="467"
+     stroke="#36c"
+     stroke-width="1.6"
+     marker-end="url(#arrow)"
+     id="line89" />
+  <!-- infra -> build role (assume) -->
+  <line
+     x1="560"
+     y1="425"
+     x2="690"
+     y2="302"
+     stroke="#36c"
+     stroke-width="1.6"
+     marker-end="url(#arrow)"
+     id="line91" />
+  <text
+     x="650.89154"
+     y="378.35391"
+     text-anchor="middle"
+     font-size="10.5px"
+     fill="#3366cc"
+     id="text93">AssumeRole</text>
+  <!-- build role -> aws (acts) -->
+  <line
+     x1="750"
+     y1="300"
+     x2="750"
+     y2="423"
+     stroke="#3a6"
+     stroke-width="1.6"
+     marker-end="url(#arrow)"
+     id="line95" />
+  <text
+     x="758"
+     y="365"
+     font-size="10.5"
+     fill="#3a6"
+     id="text97">限定権限で作成/削除</text>
+  <g
+     id="g1710">
+    <rect
+       x="40"
+       y="185"
+       width="300"
+       height="74"
+       rx="8"
+       fill="#eef3fb"
+       stroke="#33aa66"
+       stroke-width="1.5"
+       id="rect19" />
+    <text
+       x="190.12099"
+       y="210"
+       text-anchor="middle"
+       font-weight="bold"
+       id="text21">ts-030-usr-role-admin</text>
+    <text
+       x="190"
+       y="226.99648"
+       text-anchor="middle"
+       font-size="11px"
+       id="text23">ts-030-* ロールの作成/削除のみ</text>
+    <text
+       x="189.79726"
+       y="246"
+       text-anchor="middle"
+       font-size="11px"
+       id="text25">（AssumeRole/PassRole なし）</text>
+  </g>
+</svg>

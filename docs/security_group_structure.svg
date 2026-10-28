@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 560" font-family="'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Meiryo',sans-serif">
+  <!-- Last updated: 2026-07-07 -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- title -->
+  <text x="410" y="34" text-anchor="middle" font-size="21" font-weight="bold" fill="#222">セキュリティグループ: 箱 と ルール の関係</text>
+  <text x="410" y="58" text-anchor="middle" font-size="13" fill="#666">本プロジェクトの構成 = 箱(aws_security_group) ＋ ③個別ルール（①インラインは不使用）</text>
+
+  <!-- ===== 箱 (aws_security_group) ===== -->
+  <rect x="70" y="90" width="420" height="380" rx="14" fill="#eef4fb" stroke="#2f6db3" stroke-width="2.5"/>
+  <text x="90" y="120" font-size="15" font-weight="bold" fill="#1f4e79">箱（コンテナ）</text>
+  <text x="90" y="142" font-size="14" fill="#1f4e79" font-family="monospace">resource "aws_security_group" "main"</text>
+  <text x="90" y="164" font-size="12.5" fill="#333">Name = ts-030-sg-010</text>
+  <text x="90" y="183" font-size="12.5" fill="#333">description = "For S3 trigger ..."</text>
+  <text x="90" y="202" font-size="12.5" fill="#333">vpc_id = aws_vpc.main.id</text>
+  <text x="90" y="226" font-size="12" fill="#b00" font-style="italic">※ ingress / egress ブロックは書かない（＝①不使用）</text>
+
+  <!-- ingress rule -->
+  <rect x="110" y="248" width="340" height="90" rx="10" fill="#eafaf0" stroke="#2e8b57" stroke-width="2"/>
+  <text x="126" y="272" font-size="13" font-weight="bold" fill="#1e6b41">③ インバウンド 1 ルール</text>
+  <text x="126" y="292" font-size="12" fill="#1e6b41" font-family="monospace">aws_vpc_security_group_ingress_rule "ssh"</text>
+  <text x="126" y="312" font-size="12" fill="#333">tcp 22 ← 実行元グローバルIP /32（自分だけ許可）</text>
+  <text x="126" y="330" font-size="11.5" fill="#777">security_group_rule_id / タグを個別に持てる</text>
+
+  <!-- egress rule -->
+  <rect x="110" y="352" width="340" height="90" rx="10" fill="#fdf3e8" stroke="#c07a1e" stroke-width="2"/>
+  <text x="126" y="376" font-size="13" font-weight="bold" fill="#9a5f14">③ アウトバウンド 1 ルール</text>
+  <text x="126" y="396" font-size="12" fill="#9a5f14" font-family="monospace">aws_vpc_security_group_egress_rule "all"</text>
+  <text x="126" y="416" font-size="12" fill="#333">-1（全プロトコル） → 0.0.0.0/0（全許可）</text>
+  <text x="126" y="434" font-size="11.5" fill="#777">複数許可したい時はリソースを増やす</text>
+
+  <!-- attach arrows (rule -> box via security_group_id) -->
+  <line x1="480" y1="293" x2="560" y2="293" stroke="#555" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="480" y1="397" x2="560" y2="397" stroke="#555" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="565" y="290" font-size="12" fill="#333" font-weight="bold">security_group_id で</text>
+  <text x="565" y="308" font-size="12" fill="#333">箱に紐付け</text>
+  <text x="565" y="394" font-size="12" fill="#333" font-weight="bold">security_group_id で</text>
+  <text x="565" y="412" font-size="12" fill="#333">箱に紐付け</text>
+
+  <!-- key point box -->
+  <rect x="560" y="120" width="230" height="140" rx="10" fill="#fff6f6" stroke="#c0392b" stroke-width="1.8"/>
+  <text x="575" y="144" font-size="13" font-weight="bold" fill="#a93226">最重要の注意点</text>
+  <text x="575" y="167" font-size="12" fill="#333">① インライン(ingress/egress</text>
+  <text x="575" y="184" font-size="12" fill="#333">ブロック) と ③ 個別ルールの</text>
+  <text x="575" y="201" font-size="12" fill="#333">併用は競合する。</text>
+  <text x="575" y="224" font-size="12" fill="#333">→ 箱にはルールを書かず、</text>
+  <text x="575" y="241" font-size="12" fill="#333">　 ③ に統一する。</text>
+
+  <!-- footnote: box always required -->
+  <text x="70" y="502" font-size="12" fill="#555">・「箱」はどの方式でも必ず必要な土台。ルールの書き方(①/②/③)とは別レイヤー。</text>
+  <text x="70" y="522" font-size="12" fill="#555">・③は 1 リソース = 1 方向・1 プロトコル・1 送信元/宛先。ルールを独立して変更でき、SG 本体を作り直さない。</text>
+  <text x="70" y="542" font-size="12" fill="#555">・SG はステートフル。インバウンド許可の戻り通信はアウトバウンド設定に関わらず自動で通る。</text>
+</svg>

@@ -1,0 +1,36 @@
+# Terraform
+# プロバイダ本体・モジュールキャッシュ（再生成可能なため除外）
+**/.terraform/*
+
+# state ファイル（機微情報を含むため除外）
+*.tfstate
+*.tfstate.*
+
+# crash ログ
+crash.log
+crash.*.log
+
+# 変数値ファイル（環境固有・機微情報を含む場合があるため除外）
+# 本プロジェクトでは terraform.tfvars に機微情報を置かない方針だが、
+# 一般的な事故防止のため override 系は除外する
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# プラン出力
+*.tfplan
+
+# Lambda ビルド生成物（archive_file の出力 zip。再生成可能なため除外）
+infra/build/
+
+# エディタのスワップ/一時ファイル
+*.swp
+*.swo
+*~
+
+# 作業用の一時置き場（エラーログ等の受け渡し用。追跡しない）
+tmp/
+
+# E2E 用の作業ディレクトリ（大容量の入力ファイル・個人情報を含む run.conf を置くため追跡しない）
+work/

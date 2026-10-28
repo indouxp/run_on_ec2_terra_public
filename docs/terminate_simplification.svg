@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 560" font-family="'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Meiryo',sans-serif">
+  <!-- Last updated: 2026-09-22 17:17:37（案A/案B の設計比較の表現に変更） -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- title -->
+  <text x="430" y="34" text-anchor="middle" font-size="21" font-weight="bold" fill="#222">EC2 終了処理の設計（案A と 案B の比較）</text>
+  <text x="430" y="58" text-anchor="middle" font-size="13" fill="#666">ジョブ完了後に EC2 を確実に削除して課金を止める方式の比較</text>
+
+  <!-- ===== Before ===== -->
+  <rect x="40" y="82" width="780" height="190" rx="14" fill="#fdf3e8" stroke="#c07a1e" stroke-width="2.5"/>
+  <text x="60" y="110" font-size="16" font-weight="bold" fill="#a5641a">案A（不採用）：停止 → EventBridge → 終了 Lambda</text>
+
+  <!-- box1 -->
+  <rect x="60" y="128" width="180" height="110" rx="10" fill="#fff" stroke="#c07a1e" stroke-width="1.8"/>
+  <text x="150" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">① EC2</text>
+  <text x="150" y="173" text-anchor="middle" font-size="12" fill="#333">ジョブ完了</text>
+  <text x="150" y="191" text-anchor="middle" font-size="12" fill="#333" font-family="monospace">shutdown -h now</text>
+  <text x="150" y="214" text-anchor="middle" font-size="11.5" fill="#b00">既定=stop（停止のみ）</text>
+
+  <!-- box2 -->
+  <rect x="300" y="128" width="200" height="110" rx="10" fill="#fff" stroke="#c07a1e" stroke-width="1.8"/>
+  <text x="400" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">② EventBridge ルール</text>
+  <text x="400" y="176" text-anchor="middle" font-size="11.5" fill="#333">state: stopped を検知</text>
+  <text x="400" y="198" text-anchor="middle" font-size="11" fill="#777">stopped 検知ルール</text>
+
+  <!-- box3 -->
+  <rect x="560" y="128" width="200" height="110" rx="10" fill="#fff" stroke="#c07a1e" stroke-width="1.8"/>
+  <text x="660" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">③ 終了 Lambda</text>
+  <text x="660" y="176" text-anchor="middle" font-size="11.5" fill="#333">terminate_instances</text>
+  <text x="660" y="198" text-anchor="middle" font-size="11" fill="#777">autogen-by タグ確認</text>
+  <text x="660" y="220" text-anchor="middle" font-size="11.5" fill="#a5641a">＋ 専用 IAM ロール</text>
+
+  <line x1="240" y1="183" x2="298" y2="183" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="183" x2="558" y2="183" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== After ===== -->
+  <rect x="40" y="300" width="780" height="180" rx="14" fill="#eafaf0" stroke="#2e8b57" stroke-width="2.5"/>
+  <text x="60" y="328" font-size="16" font-weight="bold" fill="#1e6b41">案B（採用）：自己 terminate</text>
+
+  <!-- boxA -->
+  <rect x="60" y="346" width="300" height="110" rx="10" fill="#fff" stroke="#2e8b57" stroke-width="1.8"/>
+  <text x="210" y="370" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">起動 Lambda lmd-010</text>
+  <text x="210" y="392" text-anchor="middle" font-size="11.5" fill="#333">run_instances に指定</text>
+  <text x="210" y="414" text-anchor="middle" font-size="11" fill="#1e6b41" font-family="monospace">InstanceInitiatedShutdown</text>
+  <text x="210" y="430" text-anchor="middle" font-size="11" fill="#1e6b41" font-family="monospace">Behavior = terminate</text>
+
+  <!-- boxB -->
+  <rect x="470" y="346" width="290" height="110" rx="10" fill="#fff" stroke="#2e8b57" stroke-width="1.8"/>
+  <text x="615" y="370" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">EC2</text>
+  <text x="615" y="392" text-anchor="middle" font-size="12" fill="#333" font-family="monospace">shutdown -h now</text>
+  <text x="615" y="414" text-anchor="middle" font-size="12" fill="#1e6b41">= そのまま terminate</text>
+  <text x="615" y="436" text-anchor="middle" font-size="11" fill="#777">EBS も DeleteOnTermination で削除</text>
+
+  <line x1="360" y1="401" x2="468" y2="401" stroke="#2e8b57" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="414" y="392" text-anchor="middle" font-size="10.5" fill="#1e6b41">起動時設定</text>
+
+  <text x="430" y="510" text-anchor="middle" font-size="12.5" fill="#a5641a">案B では EventBridge ルール・終了 Lambda・その IAM ロールを作らない（WBS 2.4c/2.6/2.7 廃止）</text>
+  <text x="430" y="532" text-anchor="middle" font-size="11.5" fill="#666">※ トレードオフ：異常時にログ保全のため停止に留めたい T-6 とは相反。T-6 は別途検討</text>
+</svg>

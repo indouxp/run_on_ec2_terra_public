@@ -1,0 +1,9 @@
+# 調査スクリプト（info-ts-030.sh）の生成物
+info-ts-030-detail.json
+info-ts-030-detail.yaml
+info-ts-030-role.json
+info-ts-030-role.yaml
+
+# apply.sh / destroy 実行が出力するログ（bootstrap 配下も含む）
+apply_*.log
+destroy_*.log
