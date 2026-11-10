@@ -263,8 +263,8 @@ def main_handler(event, context):
         logger.info(f"log={config['log']}")
         logger.info(f"result={config['result']}")
         logger.info(f"timeout_sec={timeout_sec}")
-        logger.info(f"config['mail']={config['mail']}")
-        logger.info(f"config['sms']={config['sms']}")
+        # logger.info(f"config['mail']={config['mail']}") # ts: 20261110 個人情報
+        # logger.info(f"config['sms']={config['sms']}")   # ts: 20261110 個人情報
         logger.info(f"ses_from_email={ses_from_email}")
         logger.info(f"ec2_client.meta.region_name={ec2_client.meta.region_name}")
         user_data_script = user_data_script_template.format(
