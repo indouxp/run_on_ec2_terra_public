@@ -52,11 +52,13 @@ def validate_config(config):
 
     # smsのフォーマットチェック (日本の+81形式を想定)
     if not isinstance(config['sms'], str) or not config['sms'].startswith('+81') or not config['sms'][1:].isdigit():
-        raise ValueError(f"Configuration error: Invalid SMS format for 'sms'. Must be a string starting with '+81'. Found: {config['sms']}")
+        #raise ValueError(f"Configuration error: Invalid SMS format for 'sms'. Must be a string starting with '+81'. Found: {config['sms']}")
+        raise ValueError(f"Configuration error: Invalid SMS format for 'sms'. Must be a string starting with '+81'.")
 
     # ses_from_emailのフォーマットチェック
     if not re.fullmatch(r".+@.+\..+", config['ses_from_email']):
-        raise ValueError(f"Configuration error: Invalid email format for 'ses_from_email': {config['ses_from_email']}.")
+        #raise ValueError(f"Configuration error: Invalid email format for 'ses_from_email': {config['ses_from_email']}.")
+        raise ValueError(f"Configuration error: Invalid email format for 'ses_from_email'.")
 
     # ebs_sizeの範囲チェック(10G〜1000G)
     if 'ebs_size' in config:
@@ -171,9 +173,11 @@ def send_error_notification(error, context, config):
                 PhoneNumber=sms_to,
                 Message=f"[Error] Lambda: {context.function_name}. See email for details."
             )
-            logger.info(f"Successfully sent error notification to SMS: {sms_to}")
+            #logger.info(f"Successfully sent error notification to SMS: {sms_to}")
+            logger.info(f"Successfully sent error notification to SMS.")
         except Exception as e:
-            logger.error(f"Failed to send SNS notification to {sms_to}: {e}")
+            #logger.error(f"Failed to send SNS notification to {sms_to}: {e}")
+            logger.error(f"Failed to send SNS notification to SMS: {e}")
     else:
         logger.warning("SMS number not found in config. Skipping SNS notification.")
 
@@ -195,9 +199,11 @@ def send_error_notification(error, context, config):
                     'Body': {'Text': {'Data': message, 'Charset': 'UTF-8'}}
                 }
             )
-            logger.info(f"Successfully sent error notification to Email: {mail_to}")
+            #logger.info(f"Successfully sent error notification to Email: {mail_to}")
+            logger.info(f"Successfully sent error notification to Email.")
         except Exception as e:
-            logger.error(f"Failed to send SES notification to {mail_to}: {e}")
+            #logger.error(f"Failed to send SES notification to {mail_to}: {e}")
+            logger.error(f"Failed to send SES notification to Email. {e}")
     else:
         logger.warning("Email address ('mail') not found in config. Skipping SES notification.")
 
