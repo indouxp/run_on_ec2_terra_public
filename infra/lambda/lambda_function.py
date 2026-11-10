@@ -47,7 +47,8 @@ def validate_config(config):
 
     # mailのフォーマットチェック
     if not re.fullmatch(r".+@.+\..+", config['mail']):
-        raise ValueError(f"Configuration error: Invalid email format for 'mail': {config['mail']}.")
+        #raise ValueError(f"Configuration error: Invalid email format for 'mail': {config['mail']}.")
+        raise ValueError(f"Configuration error: Invalid email format for 'mail'.")
 
     # smsのフォーマットチェック (日本の+81形式を想定)
     if not isinstance(config['sms'], str) or not config['sms'].startswith('+81') or not config['sms'][1:].isdigit():
